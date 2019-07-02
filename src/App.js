@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import NavBar from './NavBar';
+import { BrowserRouter, Route } from 'react-router-dom';
+import AccountProfile from './AccountProfile';
+
+const account = {
+  username: 'Matt',
+  dateJoined: new Date(),
+  membershipLevel: 'Gold'
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <BrowserRouter>
+        <NavBar username={account.username} />
+        <Route exact path="/" render={() => <h1>Home Page</h1>} />
+        <Route exact path="/account/profile" render={() => <AccountProfile account={account} />} />
+      </BrowserRouter>
     </div>
-  );
+  )
 }
 
 export default App;
