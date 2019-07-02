@@ -1,11 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { AccountConsumer } from './AccountProvider'
 
-export default function NavBar({ username }) {
+export default function NavBar() {
     return (
-        <div>
-            <Link className="waves-effect waves-light btn red" to="/">Home</Link>
-            <Link className="waves-effect waves-light btn blue" to="/account/profile">{username}</Link>            
-        </div>
+        <AccountConsumer>
+            {account => (
+                <div>
+                    <Link className="waves-effect waves-light btn red" to="/">Home</Link>
+                    <Link className="waves-effect waves-light btn blue" to="/account/profile">{account.username}</Link>
+                </div>
+            )}
+        </AccountConsumer>
     )
 }

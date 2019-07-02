@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { AccountConsumer, AccountContext } from './AccountProvider';
 
-export default function AccountUpdate({ username, membershipLevel }) {
+export default function AccountUpdate() {
+    const context = useContext(AccountContext)
+    const { username, membershipLevel } = context
+
     const [state, setState] = useState({ username, membershipLevel })
 
     const updateUsername = (event) => {
@@ -11,25 +15,28 @@ export default function AccountUpdate({ username, membershipLevel }) {
         setState({ ...state, membershipLevel: event.target.value })
     }
 
-    useEffect(() => {
-        console.log(state)
-    })
+    const onSubmit = (event) => {
+        event.preventDefault()
+        context.updateAccount(state)
+    }
 
     return (
-        <div>
-            <form>
-                <label htmlFor="username">New Username</label>
-                <input type="text" name="username" value={state.username} onChange={updateUsername} />
-                <div className="input-field">
-                    <select name="membershipLevel" value={state.membershipLevel} onChange={updateMembershipLevel}>
-                        <option value="Bronze">Bronze</option>
-                        <option value="Silver">Silver</option>
-                        <option value="Gold">Gold</option>
-                    </select>
-                    <label htmlFor="membershipLevel">Membership Level</label>
-                </div>
-                <button>Save</button>
-            </form>
-        </div>
+        <AccountConsumer>
+            {account => (
+                <form onSubmit={onSubmit}>
+                    <label htmlFor="username">New Username</label>
+                    <input type="text" name="username" value={state.username} onChange={updateUsername} />
+                    <div className="input-field">
+                        <select name="membershipLevel" value={state.membershipLevel} onChange={updateMembershipLevel}>
+                            <option value="Bronze">Bronze</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Gold">Gold</option>
+                        </select>
+                        <label htmlFor="membershipLevel">Membership Level</label>
+                    </div>
+                    <button>Save</button>
+                </form>
+            )}
+        </AccountConsumer>
     )
 }
